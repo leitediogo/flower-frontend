@@ -2,9 +2,12 @@ import React, { Component } from 'react'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import DecisionAppBarRightIconMenu from './DecisionAppBarRightIconMenu'
+import DecisionAppBarLeftIconMenu from './DecisionAppBarLeftIconMenu'
 
-let iconStyleRight = {
-    
+let style ={
+    position: "fixed",
+    top: "0px",
+    width: "100%"
 }
 
 class DecisionAppBar extends Component {
@@ -17,9 +20,10 @@ class DecisionAppBar extends Component {
             <MuiThemeProvider>
                 <div>
                     <AppBar
+                        style={style}
                         title="Decision AppBar"
-                        iconElementRight={<DecisionAppBarRightIconMenu/>}
-                        iconStyleRight={iconStyleRight}
+                        iconElementRight={<DecisionAppBarRightIconMenu />}
+                        iconElementLeft={<DecisionAppBarLeftIconMenu />}
                         />
                 </div>
             </MuiThemeProvider>

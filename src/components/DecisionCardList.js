@@ -5,8 +5,10 @@ import DecisionCard from './DecisionCard'
 import avatar from '../images/avatar.jpg'
 import DecisionAddFloatingButton from './DecisionAddFloatingButton'
 
-
-let divstyle = { margin: 60 }
+let style = {
+    margin: 20,
+    textAlign: 'center'
+}
 
 class DecisionCardList extends Component {
     constructor() {
@@ -16,7 +18,7 @@ class DecisionCardList extends Component {
 
     componentDidMount() {
         agent.get('http://localhost:3000/api/Decisions')
-            .then(function (res) {
+            .then(function(res) {
                 this.setState({ decisionsBody: res.body });
             }.bind(this));
     }
@@ -34,7 +36,10 @@ class DecisionCardList extends Component {
         }
         return (
             <div>
-                <div style={divstyle}>{cards}</div>
+                <br />
+                <br />
+                <br />
+                <div style={style}>{cards}</div>
                 <DecisionAddFloatingButton />
             </div>
         )

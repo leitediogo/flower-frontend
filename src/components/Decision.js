@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import TextField from 'material-ui/TextField';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import FlatButton from 'material-ui/FlatButton'
+import Divider from 'material-ui/Divider'
 import agent from 'superagent'
 
 class Decision extends Component {
@@ -45,9 +46,13 @@ class Decision extends Component {
     render() {
         return (
             <MuiThemeProvider>
-                <div className="App">
+                <div>
+                    <br />
+                    <br />
+                    <br />
                     <form>
-                        <TextField 
+                        <h2>Decision Context</h2>
+                        <TextField
                             ref='id'
                             hintText="Insert Decision Id"
                             floatingLabelText="Decision Id"
@@ -70,6 +75,10 @@ class Decision extends Component {
                         <br />
                         <br />
                         <br />
+                        <br />                        
+                        <Divider />
+                        <br />
+                        <br />                        
                         <FlatButton label="Save" onTouchTap={this.saveDecision.bind(this)} />
                         <FlatButton label="Cancel" href="/" />
                     </form>
