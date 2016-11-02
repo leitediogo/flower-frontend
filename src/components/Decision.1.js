@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import TextField from 'material-ui/TextField';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import FlatButton from 'material-ui/FlatButton'
-import Paper from 'material-ui/Paper'
+import Divider from 'material-ui/Divider'
 import agent from 'superagent'
 
 let style = {
@@ -50,43 +50,43 @@ class Decision extends Component {
 
     render() {
         return (
-            <MuiThemeProvider>
+            <MuiThemeProvider class={style}>
                 <div>
                     <br />
                     <br />
                     <br />
-                    <br />
-                    <Paper zDepth={1} style={style}>
-                        <form>
-                            <TextField
-                                ref='id'
-                                hintText="Insert Decision Id"
-                                floatingLabelText="Decision Id"
-                                onChange={this.handleChange.bind(this, "id")}
-                                />
-                            <br />
-                            <TextField
-                                ref='title'
-                                hintText="Insert Decision Title"
-                                floatingLabelText="Decision Title"
-                                onChange={this.handleChange.bind(this, "title")}
-                                />
-                            <br />
-                            <TextField
-                                ref='description'
-                                hintText="Insert Decision Descritption"
-                                floatingLabelText="Decision Description"
-                                onChange={this.handleChange.bind(this, "description")}
-                                />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <FlatButton label="Cancel" href="/" />
-                            <FlatButton label="Save" onTouchTap={this.saveDecision.bind(this)} href="/" />
-                        </form>
-                    </Paper>
+                    <form>
+                        <h2>Decision Context</h2>
+                        <TextField
+                            ref='id'
+                            hintText="Insert Decision Id"
+                            floatingLabelText="Decision Id"
+                            onChange={this.handleChange.bind(this, "id")}
+                            />
+                        <br />
+                        <TextField
+                            ref='title'
+                            hintText="Insert Decision Title"
+                            floatingLabelText="Decision Title"
+                            onChange={this.handleChange.bind(this, "title")}
+                            />
+                        <br />
+                        <TextField
+                            ref='description'
+                            hintText="Insert Decision Descritption"
+                            floatingLabelText="Decision Description"
+                            onChange={this.handleChange.bind(this, "description")}
+                            />
+                        <br />
+                        <br />
+                        <br />
+                        <br />                        
+                        <Divider />
+                        <br />
+                        <br />                        
+                        <FlatButton label="Save" onTouchTap={this.saveDecision.bind(this)} />
+                        <FlatButton label="Cancel" href="/" />
+                    </form>
                 </div>
             </MuiThemeProvider>
         )

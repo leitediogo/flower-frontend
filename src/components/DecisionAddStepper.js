@@ -17,7 +17,6 @@ import DecisionAddInformation from './DecisionAddInformation'
 class DecisionAddStepper extends Component {
 
     state = {
-        finished: false,
         stepIndex: 0,
     };
 
@@ -25,7 +24,6 @@ class DecisionAddStepper extends Component {
         const {stepIndex} = this.state;
         this.setState({
             stepIndex: stepIndex + 1,
-            finished: stepIndex >= 2,
         });
     };
 
@@ -63,7 +61,7 @@ class DecisionAddStepper extends Component {
     }
 
     render() {
-        const {finished, stepIndex} = this.state;
+        const {stepIndex} = this.state;
 
         return (
             <MuiThemeProvider>
