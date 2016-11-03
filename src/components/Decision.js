@@ -91,7 +91,5 @@ class Decision extends Component {
             </MuiThemeProvider>
         )
     }
-
 }
-
 export default Decision
