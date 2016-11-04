@@ -16,7 +16,7 @@ class Decision extends Component {
         this.state = { id: 0, title: '', description: '', status: '' }
         this.handleChange = this.handleChange.bind(this);
     }
-
+    
     saveDecision() {
         agent.post('http://localhost:3000/api/Decisions')
             .send({

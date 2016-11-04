@@ -17,11 +17,9 @@ class DecisionAppBarLeftIconMenu extends Component {
         return (
             <MuiThemeProvider>
                 <div>
-                    <IconMenu
-                        iconButtonElement={<IconButton><MenuIcon color='white' /></IconButton>}
-                        onTouchTap={this.handleToggle}
-                        >
-                    </IconMenu>
+                    <IconButton onTouchTap={this.handleToggle}>
+                        <MenuIcon color='white' />
+                    </IconButton>
                     <Drawer
                         docked={false}
                         width={200}
