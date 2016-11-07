@@ -7,6 +7,7 @@ import DecisionCardList from './components/DecisionCardList'
 import Decision from './components/Decision'
 import DecisionBottomNavigation from './components/DecisionBottomNavigation'
 import DecisionAddStepper from './components/DecisionAddStepper'
+import AddDecision from './components/AddDecision'
 
 // Needed for onTouchTap
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -23,6 +24,7 @@ class App extends Component {
           <Route path="/" component={DecisionCardList} />
           <Route path="/decision" component={Decision} />
           <Route path="/stepper" component={DecisionAddStepper} />
+          <Route path="/adddecision" component={AddDecision} />
         </Router>
         <div>
           <DecisionBottomNavigation />
