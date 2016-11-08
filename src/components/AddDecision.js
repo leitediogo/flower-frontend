@@ -7,10 +7,10 @@ import {
     Stepper,
     StepLabel,
 } from 'material-ui/Stepper'
-import DecisionContext from './DecisionContext'
-import DecisionCriteria from './DecisionCriteria'
-import DecisionChoice from './DecisionChoice'
-import DecisionParticipants from './DecisionParticipants'
+import AddDecisionContext from './AddDecisionContext'
+import AddDecisionCriteria from './AddDecisionCriteria'
+import AddDecisionChoices from './AddDecisionChoices'
+import AddDecisionParticipants from './AddDecisionParticipants'
 
 class AddDecision extends Component {
     state = {
@@ -37,13 +37,13 @@ class AddDecision extends Component {
     getStepContent(stepIndex) {
         switch (stepIndex) {
             case 0:
-                return (<DecisionContext />)
+                return (<AddDecisionContext />)
             case 1:
-                return (<DecisionCriteria />)
+                return (<AddDecisionCriteria />)
             case 2:
-                return (<DecisionChoice />)
+                return (<AddDecisionChoices />)
             case 3:
-                return (<DecisionParticipants />)
+                return (<AddDecisionParticipants />)
             default:
                 return 'Houston?'
         }
@@ -75,7 +75,7 @@ class AddDecision extends Component {
                         {finished ? (<p><a href="#" onClick={(event) => {
                             event.preventDefault();
                             this.setState({ stepIndex: 0, finished: false });
-                        } }>Click here </a> to reset the example.</p>
+                        } }>Click here </a> to reset this shit.</p>
                         ) : (
                                 <div>
                                     {this.getStepContent(stepIndex)}
@@ -102,4 +102,4 @@ class AddDecision extends Component {
 
 }
 
-export default AddDecision;
+export default AddDecision

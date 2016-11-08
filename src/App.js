@@ -4,9 +4,7 @@ import './App.css';
 import { Router, Route, browserHistory } from 'react-router'
 import DecisionAppBar from './components/DecisionAppBar'
 import DecisionCardList from './components/DecisionCardList'
-import Decision from './components/Decision'
 import DecisionBottomNavigation from './components/DecisionBottomNavigation'
-import DecisionAddStepper from './components/DecisionAddStepper'
 import AddDecision from './components/AddDecision'
 
 // Needed for onTouchTap
@@ -22,9 +20,7 @@ class App extends Component {
         </div>
         <Router history={browserHistory}>
           <Route path="/" component={DecisionCardList} />
-          <Route path="/decision" component={Decision} />
-          <Route path="/stepper" component={DecisionAddStepper} />
-          <Route path="/adddecision" component={AddDecision} />
+          <Route path="/AddDecision" component={AddDecision} />
         </Router>
         <div>
           <DecisionBottomNavigation />

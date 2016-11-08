@@ -20,7 +20,7 @@ class DecisionAddFloatingButton extends Component {
     render() {
         return (
             <MuiThemeProvider>
-                <FloatingActionButton style={style} href="\decision">
+                <FloatingActionButton style={style} href="\AddDecision">
                     <ContentAdd />
                 </FloatingActionButton>
             </MuiThemeProvider>
