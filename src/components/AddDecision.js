@@ -16,7 +16,10 @@ class AddDecision extends Component {
     state = {
         finished: false,
         stepIndex: 0,
-        decision: []
+        decision: {
+            title: 'init state title',
+            description: 'init state description'
+        }
     }
 
     handleNext = () => {
@@ -37,7 +40,7 @@ class AddDecision extends Component {
     getStepContent(stepIndex) {
         switch (stepIndex) {
             case 0:
-                return (<AddDecisionContext />)
+                return (<AddDecisionContext title={this.state.decision.title} description={this.state.decision.description} />)
             case 1:
                 return (<AddDecisionCriteria />)
             case 2:
@@ -56,7 +59,7 @@ class AddDecision extends Component {
         return (
             <MuiThemeProvider>
                 <div style={{ width: '100%', maxWidth: 700, margin: 'auto' }}>
-                    <br /><br /><br />
+                    <br /><br /><br /> 
                     <Stepper activeStep={stepIndex}>
                         <Step>
                             <StepLabel>Insert Decision Context</StepLabel>
