@@ -4,6 +4,14 @@ import MenuItem from 'material-ui/MenuItem';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import IconButton from 'material-ui/IconButton'
 import Drawer from 'material-ui/Drawer';
+import RemoveRedEye from 'material-ui/svg-icons/image/remove-red-eye';
+import PersonAdd from 'material-ui/svg-icons/social/person-add';
+import ContentLink from 'material-ui/svg-icons/content/link';
+import Divider from 'material-ui/Divider';
+import ContentCopy from 'material-ui/svg-icons/content/content-copy';
+import Download from 'material-ui/svg-icons/file/file-download';
+import Delete from 'material-ui/svg-icons/action/delete';
+
 
 class DecisionAppBarLeftIconMenu extends Component {
 
@@ -25,8 +33,17 @@ class DecisionAppBarLeftIconMenu extends Component {
                         open={this.state.open}
                         onRequestChange={(open) => this.setState({ open })}
                         >
-                        <MenuItem>New Decision</MenuItem>
-                        <MenuItem>My Decisions</MenuItem>
+                        <br />
+                        <br />
+                        <MenuItem primaryText="Government" leftIcon={<RemoveRedEye />} />
+                        <MenuItem primaryText="Consumer" leftIcon={<PersonAdd />} />
+                        <MenuItem primaryText="Corporate" leftIcon={<ContentLink />} />
+                        <Divider />
+                        <MenuItem primaryText="Finance" leftIcon={<ContentCopy />} />
+                        <MenuItem primaryText="Social" leftIcon={<Download />} />
+                        <Divider />
+                        <MenuItem primaryText="My Decisions" leftIcon={<Delete />} />
+
                     </Drawer>
                 </div>
             </MuiThemeProvider>

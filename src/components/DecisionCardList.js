@@ -17,7 +17,7 @@ class DecisionCardList extends Component {
     }
 
     componentDidMount() {
-        agent.get('http://192.168.1.5:3000/api/Decisions')
+        agent.get('http://localhost:3000/api/Decisions')
             .then(function(res) {
                 this.setState({ decisionsBody: res.body });
             }.bind(this));
