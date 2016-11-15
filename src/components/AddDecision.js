@@ -14,6 +14,7 @@ import MenuItem from 'material-ui/MenuItem'
 import { Table, TableRow, TableBody, TableRowColumn, TableHeader, TableHeaderColumn } from 'material-ui/Table'
 import IconDelete from 'material-ui/svg-icons/action/delete'
 import agent from 'superagent'
+import Dialog from 'material-ui/Dialog';
 
 const iconDelete = <IconDelete />
 
@@ -26,20 +27,43 @@ const styles = {
     },
     paper: {
         margin: 20,
-        textAlign: 'center',
+        textAlign: 'left',
         width: 500,
         height: 300
     }
 };
 
-const tableData = [
+let tableDataCriteria = [
     {
-        type: 'John Smith',
-        name: 'PPO Platform'
+        name: 'Cost',
+        description: 'cost of ownership'
     },
     {
-        type: 'Mathew',
-        name: 'Send Mail'
+        name: 'Weight',
+        descrition: 'Heavy lifting'
+    }
+]
+
+let tableDataChoices = [
+    {
+        name: 'Buy',
+        description: 'go for it'
+    },
+    {
+        name: 'Rent',
+        descrition: 'try it'
+    }
+]
+
+
+let tableDataParticipants = [
+    {
+        name: 'Diogo',
+        description: 'owner'
+    },
+    {
+        name: 'Fran',
+        description: 'participant'
     }
 ]
 
@@ -47,9 +71,11 @@ class AddDecision extends Component {
 
     constructor(props, context) {
         super(props, context)
+        console.log(process.env.REACT_ENV_TEST);
         this.state = {
             finished: false,
             stepIndex: 0,
+            open: false,
             decision: {
                 id: 12,
                 name: '',
@@ -82,10 +108,9 @@ class AddDecision extends Component {
     }
 
 
- saveDecision() {
+    saveDecision() {
         agent.post('http://localhost:3000/api/Decisions')
             .send({
-                id: this.state.decision.id,
                 name: this.state.decision.name,
                 description: this.state.decision.description,
                 status: "ongoing",
@@ -99,13 +124,30 @@ class AddDecision extends Component {
             .set('Accept', 'application/json')
             .end(function (err, res) {
                 if (err || !res.ok) {
-                    console.log('Oh no! error');
+                    console.log(err)
+                    console.log(res.body)
                 } else {
                     console.log('yay got ' + JSON.stringify(res.body));
                 }
             })
     }
 
+    saveCriteria() {
+        tableDataCriteria = [
+            {
+                name: 'Cost',
+                description: 'cost of ownership'
+            },
+            {
+                name: 'Weight',
+                descrition: 'Heavy lifting'
+            },
+            {
+                name: 'New Crit',
+                descrition: 'Heavy lifting'
+            }
+        ]
+    }
 
     handleChange(name, e) {
         //TODO: bind select
@@ -132,12 +174,37 @@ class AddDecision extends Component {
         }
     }
 
+    handleOpen = () => {
+        this.setState({ open: true });
+    };
+
+    handleClose = () => {
+        this.saveCriteria();
+        this.setState({ open: false });
+       
+    };
+
     getStepContent(stepIndex) {
+
+        const actions = [
+            <FlatButton
+                label="Cancel"
+                primary={true}
+                onTouchTap={this.handleClose}
+                />,
+            <FlatButton
+                label="Save"
+                primary={true}
+                keyboardFocused={true}
+                onTouchTap={this.handleClose}
+                />,
+        ];
+
         switch (stepIndex) {
             case 0:
                 return (
                     <div>
-                        <Paper zDepth={1} style={styles.paper}>
+                        <Paper zDepth={0} style={styles.paper}>
                             <TextField
                                 hintText="Insert Decision Name"
                                 floatingLabelText="Decision Name"
@@ -153,6 +220,8 @@ class AddDecision extends Component {
                                 />
                             <br />
                             <SelectField
+                                hintText="Insert Decision Category"
+                                floatingLabelText="Decision Category"
                                 value={this.state.value}
                                 onChange={this.handleSelectChange}
                                 >
@@ -168,7 +237,7 @@ class AddDecision extends Component {
             case 1:
                 return (
                     <div>
-                        <Paper zDepth={1} style={styles.paper}>
+                        <Paper zDepth={0} style={styles.paper}>
                             <Table>
                                 <TableHeader displaySelectAll={false}>
                                     <TableRow>
@@ -178,23 +247,44 @@ class AddDecision extends Component {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody displayRowCheckbox={false} >
-                                    {tableData.map((row, index) => (
+                                    {tableDataCriteria.map((row, index) => (
                                         <TableRow key={index} selected={row.selected}>
-                                            <TableRowColumn>{row.type}</TableRowColumn>
                                             <TableRowColumn>{row.name}</TableRowColumn>
+                                            <TableRowColumn>{row.description}</TableRowColumn>
                                             <TableRowColumn><FlatButton icon={iconDelete} href="/" /></TableRowColumn>
                                         </TableRow>
                                     ))}
                                 </TableBody>
                             </Table>
-                            <FlatButton label="Add" href="/" />
+                            <RaisedButton label="Add Criteria" onTouchTap={this.handleOpen} />
+                            <Dialog
+                                title="Add Criteria"
+                                actions={actions}
+                                modal={false}
+                                open={this.state.open}
+                                onRequestClose={this.handleClose}
+                                >
+                                <TextField
+                                    hintText="Insert Criterion Name"
+                                    floatingLabelText="Criterion Name"
+                                    //value={this.state.decision.name}
+                                    //onChange={this.handleChange.bind(this, 'name')}
+                                    />
+                                <br />
+                                <TextField
+                                    hintText="Insert Criterion Description"
+                                    floatingLabelText="Criterion Description"
+                                    //value={this.state.decision.description}
+                                    //onChange={this.handleChange.bind(this, 'description')}
+                                    />
+                            </Dialog>
                         </Paper>
                     </div>
                 )
             case 2:
                 return (
                     <div>
-                        <Paper zDepth={1} style={styles.paper}>
+                        <Paper zDepth={0} style={styles.paper}>
                             <Table>
                                 <TableHeader displaySelectAll={false}>
                                     <TableRow>
@@ -204,23 +294,43 @@ class AddDecision extends Component {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody displayRowCheckbox={false} >
-                                    {tableData.map((row, index) => (
+                                    {tableDataChoices.map((row, index) => (
                                         <TableRow key={index} selected={row.selected}>
-                                            <TableRowColumn>{row.type}</TableRowColumn>
                                             <TableRowColumn>{row.name}</TableRowColumn>
+                                            <TableRowColumn>{row.descrition}</TableRowColumn>
                                             <TableRowColumn><FlatButton icon={iconDelete} href="/" /></TableRowColumn>
                                         </TableRow>
                                     ))}
                                 </TableBody>
-                            </Table>
-                            <FlatButton label="Add" href="/" />
+                            </Table><RaisedButton label="Add Choices" onTouchTap={this.handleOpen} />
+                            <Dialog
+                                title="Add Choices"
+                                actions={actions}
+                                modal={false}
+                                open={this.state.open}
+                                onRequestClose={this.handleClose}
+                                >
+                                <TextField
+                                    hintText="Insert Choice Name"
+                                    floatingLabelText="Choice Name"
+                                    //value={this.state.decision.name}
+                                    //onChange={this.handleChange.bind(this, 'name')}
+                                    />
+                                <br />
+                                <TextField
+                                    hintText="Insert Choice Description"
+                                    floatingLabelText="Choice Description"
+                                    //value={this.state.decision.description}
+                                    //onChange={this.handleChange.bind(this, 'description')}
+                                    />
+                            </Dialog>
                         </Paper>
                     </div>
                 )
             case 3:
                 return (
                     <div>
-                        <Paper zDepth={1} style={styles.paper}>
+                        <Paper zDepth={0} style={styles.paper}>
                             <Table>
                                 <TableHeader displaySelectAll={false}>
                                     <TableRow>
@@ -230,23 +340,23 @@ class AddDecision extends Component {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody displayRowCheckbox={false} >
-                                    {tableData.map((row, index) => (
+                                    {tableDataParticipants.map((row, index) => (
                                         <TableRow key={index} selected={row.selected}>
-                                            <TableRowColumn>{row.type}</TableRowColumn>
                                             <TableRowColumn>{row.name}</TableRowColumn>
+                                            <TableRowColumn>{row.description}</TableRowColumn>
                                             <TableRowColumn><FlatButton icon={iconDelete} href="/" /></TableRowColumn>
                                         </TableRow>
                                     ))}
                                 </TableBody>
                             </Table>
-                            <FlatButton label="Add" href="/" />
+                            <FlatButton label="Add Participants" href="/" />
                         </Paper>
                     </div>
                 )
-                            case 4:
+            case 4:
                 return (
                     <div>
-                        <Paper zDepth={1} style={styles.paper}>
+                        <Paper zDepth={0} style={styles.paper}>
                             <Table>
                                 <TableHeader displaySelectAll={false}>
                                     <TableRow>
@@ -256,7 +366,7 @@ class AddDecision extends Component {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody displayRowCheckbox={false} >
-                                    {tableData.map((row, index) => (
+                                    {tableDataCriteria.map((row, index) => (
                                         <TableRow key={index} selected={row.selected}>
                                             <TableRowColumn>{row.type}</TableRowColumn>
                                             <TableRowColumn>{row.name}</TableRowColumn>
@@ -265,7 +375,7 @@ class AddDecision extends Component {
                                     ))}
                                 </TableBody>
                             </Table>
-                            <FlatButton label="Add" href="/" />
+                            <FlatButton label="Add Information" href="/" />
                         </Paper>
                     </div>
                 )
@@ -293,21 +403,21 @@ class AddDecision extends Component {
                         <Step>
                             <StepLabel>Insert decision partipants</StepLabel>
                         </Step>
-                                                <Step>
+                        <Step>
                             <StepLabel>Insert information</StepLabel>
                         </Step>
                     </Stepper>
                     <div style={contentStyle}>
                         {finished ? (
-                           <p>
-                           <a href="#"
-                onClick={(event) => {
-                  //event.preventDefault();
-                  //this.setState({stepIndex: 0, finished: false});
-                  this.saveDecision()
-                }}
-              >
-                Save
+                            <p>
+                                <a href="#"
+                                    onClick={(event) => {
+                                        //event.preventDefault();
+                                        //this.setState({stepIndex: 0, finished: false});
+                                        this.saveDecision()
+                                    } }
+                                    >
+                                    Save
               </a> the Decision?
             </p>
 
