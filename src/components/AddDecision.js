@@ -71,44 +71,46 @@ class AddDecision extends Component {
 
     constructor(props, context) {
         super(props, context)
-        console.log(process.env.REACT_ENV_TEST);
         this.state = {
             finished: false,
             stepIndex: 0,
             open: false,
             decision: {
-                id: 12,
+                id: 0,
                 name: '',
                 description: '',
                 status: 'Creation',
-                category: '',
+                category: 1,
                 owner: {
-                    userId: '',
+                    userId: 0,
                     userName: '',
                     function: ''
                 },
-                participant: {
-                    userId: '',
-                    userName: '',
-                    function: ''
-                },
-                criterion: {
-                    name: '',
-                    descrition: '',
-                    status: ''
-                },
-                choice: {
-                    name: '',
-                    descrition: '',
-                    status: ''
-                }
+                participant: [
+                    {
+                        name: 'Diogo',
+                        description: 'owner'
+                    }
+                ],
+                criteria: [
+                    {
+                        name: 'Cost',
+                        description: 'cost of ownership'
+                    }],
+                choice: [
+                    {
+                        name: 'Buy',
+                        description: 'go for it'
+                    }
+                ],
+                tmpCritName: '',
+                tmpCritDesc: ''
             }
         }
         this.handleChange = this.handleChange.bind(this);
     }
 
-
-    saveDecision() {
+    postDecision() {
         agent.post('http://localhost:3000/api/Decisions')
             .send({
                 name: this.state.decision.name,
@@ -149,15 +151,19 @@ class AddDecision extends Component {
         ]
     }
 
-    handleChange(name, e) {
-        //TODO: bind select
+    handleChange = (e) => {
         let change = this.state
-        change.decision[name] = e.target.value
+        change.decision[e.target.id] = e.target.value
         this.setState(change)
         console.log(this.state)
     }
 
-    handleSelectChange = (event, index, value) => this.setState({ value });
+    handleSelectChange = (event, index, value) => {
+        let change = this.state
+        change.decision.category = value
+        this.setState(change)
+        console.log(this.state)
+    }
 
     handleNext = () => {
         const {stepIndex} = this.state;
@@ -179,12 +185,34 @@ class AddDecision extends Component {
     };
 
     handleClose = () => {
-        this.saveCriteria();
         this.setState({ open: false });
-       
+
     };
 
+    handleSaveCriteria = () => {
+        console.log(this.state.decision.criteria)
+        this.setState({open: false})
+        let change = this.state
+        change.decision.criteria.push()
+        this.setState(change)
+        console.log(this.state)
+    }
+
     getStepContent(stepIndex) {
+
+        const actionsCriteria = [
+            <FlatButton
+                label="Cancel"
+                primary={true}
+                onTouchTap={this.handleClose}
+                />,
+            <FlatButton
+                label="Save"
+                primary={true}
+                keyboardFocused={true}
+                onTouchTap={this.handleSaveCriteria}
+                />,
+        ];
 
         const actions = [
             <FlatButton
@@ -206,23 +234,26 @@ class AddDecision extends Component {
                     <div>
                         <Paper zDepth={0} style={styles.paper}>
                             <TextField
+                                id="name"
                                 hintText="Insert Decision Name"
                                 floatingLabelText="Decision Name"
                                 value={this.state.decision.name}
-                                onChange={this.handleChange.bind(this, 'name')}
+                                onChange={this.handleChange.bind(this)}
                                 />
                             <br />
                             <TextField
+                                id="description"
                                 hintText="Insert Decision Description"
                                 floatingLabelText="Decision Description"
                                 value={this.state.decision.description}
-                                onChange={this.handleChange.bind(this, 'description')}
+                                onChange={this.handleChange.bind(this)}
                                 />
                             <br />
                             <SelectField
+                                id="category"
                                 hintText="Insert Decision Category"
                                 floatingLabelText="Decision Category"
-                                value={this.state.value}
+                                value={this.state.decision.category}
                                 onChange={this.handleSelectChange}
                                 >
                                 <MenuItem value={1} primaryText="Government" />
@@ -247,7 +278,7 @@ class AddDecision extends Component {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody displayRowCheckbox={false} >
-                                    {tableDataCriteria.map((row, index) => (
+                                    {this.state.decision.criteria.map((row, index) => (
                                         <TableRow key={index} selected={row.selected}>
                                             <TableRowColumn>{row.name}</TableRowColumn>
                                             <TableRowColumn>{row.description}</TableRowColumn>
@@ -259,23 +290,25 @@ class AddDecision extends Component {
                             <RaisedButton label="Add Criteria" onTouchTap={this.handleOpen} />
                             <Dialog
                                 title="Add Criteria"
-                                actions={actions}
+                                actions={actionsCriteria}
                                 modal={false}
                                 open={this.state.open}
                                 onRequestClose={this.handleClose}
                                 >
                                 <TextField
+                                    id="tmpCritName"
                                     hintText="Insert Criterion Name"
                                     floatingLabelText="Criterion Name"
-                                    //value={this.state.decision.name}
-                                    //onChange={this.handleChange.bind(this, 'name')}
+                                    value={this.state.decision.tmpCritName}
+                                    onChange={this.handleChange.bind(this)}
                                     />
                                 <br />
                                 <TextField
+                                    id="tmpCritDesc"
                                     hintText="Insert Criterion Description"
                                     floatingLabelText="Criterion Description"
-                                    //value={this.state.decision.description}
-                                    //onChange={this.handleChange.bind(this, 'description')}
+                                     value={this.state.decision.tmpCritDesc}
+                                    onChange={this.handleChange.bind(this)}     //onChange={this.handleChange.bind(this, 'description')}
                                     />
                             </Dialog>
                         </Paper>
@@ -414,14 +447,14 @@ class AddDecision extends Component {
                                     onClick={(event) => {
                                         //event.preventDefault();
                                         //this.setState({stepIndex: 0, finished: false});
-                                        this.saveDecision()
+                                        this.postDecision()
                                     } }
                                     >
                                     Save
-              </a> the Decision?
-            </p>
+                                </a> the Decision?
+                             </p>
 
-                        ) : (
+                         ) : (
                                 <div>
                                     {this.getStepContent(stepIndex)}
                                     <div style={{ marginTop: 12 }}>
