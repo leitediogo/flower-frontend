@@ -5,7 +5,8 @@ import { Router, Route, browserHistory } from 'react-router'
 import DecisionAppBar from './components/DecisionAppBar'
 import DecisionCardList from './components/DecisionCardList'
 import DecisionBottomNavigation from './components/DecisionBottomNavigation'
-import AddDecision from './components/AddDecision'
+import AddDecisionWizard from './components/AddDecisionWizard'
+import IconTesting from './components/IconTesting'
 
 // Needed for onTouchTap
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -20,7 +21,8 @@ class App extends Component {
         </div>
         <Router history={browserHistory}>
           <Route path="/" component={DecisionCardList} />
-          <Route path="/AddDecision" component={AddDecision} />
+          <Route path="/AddDecisionWizard" component={AddDecisionWizard} />
+          <Route path="/icons" component={IconTesting} />
         </Router>
         <div>
           <DecisionBottomNavigation />

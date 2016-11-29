@@ -13,14 +13,10 @@ let style = {
 }
 
 class DecisionAddFloatingButton extends Component {
-    constructor() {
-        super();
-        this.state = { decisionState: '' }
-    }
     render() {
         return (
             <MuiThemeProvider>
-                <FloatingActionButton style={style} href="\AddDecision">
+                <FloatingActionButton style={style} href="\AddDecisionWizard">
                     <ContentAdd />
                 </FloatingActionButton>
             </MuiThemeProvider>

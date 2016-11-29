@@ -14,7 +14,8 @@ import MenuItem from 'material-ui/MenuItem'
 import { Table, TableRow, TableBody, TableRowColumn, TableHeader, TableHeaderColumn } from 'material-ui/Table'
 import IconDelete from 'material-ui/svg-icons/action/delete'
 import agent from 'superagent'
-import Dialog from 'material-ui/Dialog';
+import Dialog from 'material-ui/Dialog'
+import { browserHistory } from 'react-router'
 
 const iconDelete = <IconDelete />
 
@@ -33,41 +34,7 @@ const styles = {
     }
 };
 
-let tableDataCriteria = [
-    {
-        name: 'Cost',
-        description: 'cost of ownership'
-    },
-    {
-        name: 'Weight',
-        descrition: 'Heavy lifting'
-    }
-]
-
-let tableDataChoices = [
-    {
-        name: 'Buy',
-        description: 'go for it'
-    },
-    {
-        name: 'Rent',
-        descrition: 'try it'
-    }
-]
-
-
-let tableDataParticipants = [
-    {
-        name: 'Diogo',
-        description: 'owner'
-    },
-    {
-        name: 'Fran',
-        description: 'participant'
-    }
-]
-
-class AddDecision extends Component {
+class AddDecisionWizard extends Component {
 
     constructor(props, context) {
         super(props, context)
@@ -80,34 +47,21 @@ class AddDecision extends Component {
                 name: '',
                 description: '',
                 status: 'Creation',
-                category: 1,
-                owner: {
-                    userId: 0,
-                    userName: '',
-                    function: ''
-                },
-                participant: [
-                    {
-                        name: 'Diogo',
-                        description: 'owner'
-                    }
-                ],
-                criteria: [
-                    {
-                        name: 'Cost',
-                        description: 'cost of ownership'
-                    }],
-                choice: [
-                    {
-                        name: 'Buy',
-                        description: 'go for it'
-                    }
-                ],
+                category: '',
+                createdBy: 'Diogo Leite',
+                owner: {},
+                participant: [],
+                criteria: [],
+                choice: [],
                 tmpCritName: '',
-                tmpCritDesc: ''
+                tmpCritDesc: '',
+                tmpChoiceName: '',
+                tmpChoiceDesc: '',
+                tmpParticipantName: '',
+                tmpParticipantDesc: ''
             }
         }
-        this.handleChange = this.handleChange.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this)
     }
 
     postDecision() {
@@ -115,7 +69,9 @@ class AddDecision extends Component {
             .send({
                 name: this.state.decision.name,
                 description: this.state.decision.description,
-                status: "ongoing",
+                status: "created",
+                category: this.state.decision.category,
+                createdBy: this.state.decision.createdBy,
                 createdById: 0,
                 ownerId: 0,
                 categoryId: 1,
@@ -129,102 +85,140 @@ class AddDecision extends Component {
                     console.log(err)
                     console.log(res.body)
                 } else {
-                    console.log('yay got ' + JSON.stringify(res.body));
+                    console.log('yay! decision posted ' + JSON.stringify(res.body));
                 }
             })
     }
 
-    saveCriteria() {
-        tableDataCriteria = [
-            {
-                name: 'Cost',
-                description: 'cost of ownership'
-            },
-            {
-                name: 'Weight',
-                descrition: 'Heavy lifting'
-            },
-            {
-                name: 'New Crit',
-                descrition: 'Heavy lifting'
-            }
-        ]
-    }
-
-    handleChange = (e) => {
+    handleInputChange = (e) => {
+        console.log(e.target)
         let change = this.state
         change.decision[e.target.id] = e.target.value
         this.setState(change)
         console.log(this.state)
     }
 
-    handleSelectChange = (event, index, value) => {
+    //Generalize selects per name
+    handleSelectCategoryChange = (event, index, value) => {
         let change = this.state
         change.decision.category = value
         this.setState(change)
         console.log(this.state)
     }
 
-    handleNext = () => {
+    handleNextWizard = () => {
         const {stepIndex} = this.state;
         this.setState({
             stepIndex: stepIndex + 1,
-            finished: stepIndex >= 4,
+            finished: stepIndex >= 3,
         })
     }
 
-    handlePrev = () => {
+    handlePrevWizard = () => {
         const {stepIndex} = this.state
         if (stepIndex > 0) {
             this.setState({ stepIndex: stepIndex - 1 })
         }
     }
 
-    handleOpen = () => {
-        this.setState({ open: true });
-    };
+    handleFinishWizard = () => {
+        this.postDecision()
+        browserHistory.push('/')
+    }
 
-    handleClose = () => {
-        this.setState({ open: false });
+    handleOpenModal = () => {
+        this.setState({ open: true })
+    }
 
-    };
+    handleCloseModal = () => {
+        this.setState({ open: false })
+    }
 
-    handleSaveCriteria = () => {
-        console.log(this.state.decision.criteria)
-        this.setState({open: false})
+    handleSaveCriteriaModal = () => {
+        //set state to close modal
+        this.setState({ open: false })
+        //set state to push step
         let change = this.state
-        change.decision.criteria.push()
-        this.setState(change)
-        console.log(this.state)
+        let criterionToPush = {
+            name: this.state.decision.tmpCritName,
+            description: this.state.decision.tmpCritDesc
+        }
+        change.decision.criteria.push(criterionToPush)
+        //reset tmps 
+        change.decision.tmpCritName = ''
+        change.decision.tmpCritDesc = ''
+    }
+
+    handleSaveChoiceModal = () => {
+        //set state to close modal
+        this.setState({ open: false })
+        //set state to push step
+        let change = this.state
+        let choiceToPush = {
+            name: this.state.decision.tmpChoiceName,
+            description: this.state.decision.tmpChoiceDesc
+        }
+        change.decision.choice.push(choiceToPush)
+        //reset tmps 
+        change.decision.tmpChoiceName = ''
+        change.decision.tmpChoiceDesc = ''
+    }
+
+    handleSaveParticipantModal = () => {
+        //set state to close modal
+        this.setState({ open: false })
+        //set state to push step
+        let change = this.state
+        let participantToPush = {
+            name: this.state.decision.tmpParticipantName,
+            description: this.state.decision.tmpParticipantDesc
+        }
+        change.decision.participant.push(participantToPush)
+        //reset tmps 
+        change.decision.tmpParticipantName = ''
+        change.decision.tmpParticipantDesc = ''
     }
 
     getStepContent(stepIndex) {
-
-        const actionsCriteria = [
+        const actionsCriteriaModal = [
             <FlatButton
                 label="Cancel"
                 primary={true}
-                onTouchTap={this.handleClose}
+                onTouchTap={this.handleCloseModal}
                 />,
             <FlatButton
                 label="Save"
                 primary={true}
                 keyboardFocused={true}
-                onTouchTap={this.handleSaveCriteria}
+                onTouchTap={this.handleSaveCriteriaModal}
                 />,
         ];
 
-        const actions = [
+        const actionsChoiceModal = [
             <FlatButton
                 label="Cancel"
                 primary={true}
-                onTouchTap={this.handleClose}
+                onTouchTap={this.handleCloseModal}
                 />,
             <FlatButton
                 label="Save"
                 primary={true}
                 keyboardFocused={true}
-                onTouchTap={this.handleClose}
+                onTouchTap={this.handleSaveChoiceModal}
+                />,
+        ];
+
+        const actionsParticipantModal = [
+            <FlatButton
+                label="Cancel"
+                primary={true}
+                onTouchTap={this.handleCloseModal}
+                />,
+            <FlatButton
+                label="Save"
+                primary={true}
+                keyboardFocused={true}
+                onTouchTap={this.handleSaveParticipantModal}
                 />,
         ];
 
@@ -238,7 +232,7 @@ class AddDecision extends Component {
                                 hintText="Insert Decision Name"
                                 floatingLabelText="Decision Name"
                                 value={this.state.decision.name}
-                                onChange={this.handleChange.bind(this)}
+                                onChange={this.handleInputChange.bind(this)}
                                 />
                             <br />
                             <TextField
@@ -246,7 +240,9 @@ class AddDecision extends Component {
                                 hintText="Insert Decision Description"
                                 floatingLabelText="Decision Description"
                                 value={this.state.decision.description}
-                                onChange={this.handleChange.bind(this)}
+                                onChange={this.handleInputChange.bind(this)}
+                                multiLine={true}
+                                rows={2}
                                 />
                             <br />
                             <SelectField
@@ -254,12 +250,14 @@ class AddDecision extends Component {
                                 hintText="Insert Decision Category"
                                 floatingLabelText="Decision Category"
                                 value={this.state.decision.category}
-                                onChange={this.handleSelectChange}
+                                onChange={this.handleSelectCategoryChange}
                                 >
-                                <MenuItem value={1} primaryText="Government" />
-                                <MenuItem value={2} primaryText="Consumer" />
-                                <MenuItem value={3} primaryText="Finance" />
-                                <MenuItem value={4} primaryText="Social" />
+                                <MenuItem value={'Government'} primaryText="Government" />
+                                <MenuItem value={'Consumer'} primaryText="Consumer" />
+                                <MenuItem value={'Corporate'} primaryText="Corporate" />
+                                <MenuItem value={'Finance'} primaryText="Finance" />
+                                <MenuItem value={'Legal'} primaryText="Legal" />
+                                <MenuItem value={'Educational'} primaryText="Educational" />
                             </SelectField>
                             <br />
                         </Paper>
@@ -287,28 +285,28 @@ class AddDecision extends Component {
                                     ))}
                                 </TableBody>
                             </Table>
-                            <RaisedButton label="Add Criteria" onTouchTap={this.handleOpen} />
+                            <RaisedButton label="Add Criteria" onTouchTap={this.handleOpenModal} fullWidth={true} />
                             <Dialog
                                 title="Add Criteria"
-                                actions={actionsCriteria}
+                                actions={actionsCriteriaModal}
                                 modal={false}
                                 open={this.state.open}
-                                onRequestClose={this.handleClose}
+                                onRequestClose={this.handleCloseModal}
                                 >
                                 <TextField
                                     id="tmpCritName"
                                     hintText="Insert Criterion Name"
                                     floatingLabelText="Criterion Name"
                                     value={this.state.decision.tmpCritName}
-                                    onChange={this.handleChange.bind(this)}
+                                    onChange={this.handleInputChange.bind(this)}
                                     />
                                 <br />
                                 <TextField
                                     id="tmpCritDesc"
                                     hintText="Insert Criterion Description"
                                     floatingLabelText="Criterion Description"
-                                     value={this.state.decision.tmpCritDesc}
-                                    onChange={this.handleChange.bind(this)}     //onChange={this.handleChange.bind(this, 'description')}
+                                    value={this.state.decision.tmpCritDesc}
+                                    onChange={this.handleInputChange.bind(this)}
                                     />
                             </Dialog>
                         </Paper>
@@ -327,34 +325,37 @@ class AddDecision extends Component {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody displayRowCheckbox={false} >
-                                    {tableDataChoices.map((row, index) => (
+                                    {this.state.decision.choice.map((row, index) => (
                                         <TableRow key={index} selected={row.selected}>
                                             <TableRowColumn>{row.name}</TableRowColumn>
-                                            <TableRowColumn>{row.descrition}</TableRowColumn>
+                                            <TableRowColumn>{row.description}</TableRowColumn>
                                             <TableRowColumn><FlatButton icon={iconDelete} href="/" /></TableRowColumn>
                                         </TableRow>
                                     ))}
                                 </TableBody>
-                            </Table><RaisedButton label="Add Choices" onTouchTap={this.handleOpen} />
+                            </Table>
+                            <RaisedButton label="Add Choices" onTouchTap={this.handleOpenModal} fullWidth={true} />
                             <Dialog
                                 title="Add Choices"
-                                actions={actions}
+                                actions={actionsChoiceModal}
                                 modal={false}
                                 open={this.state.open}
-                                onRequestClose={this.handleClose}
+                                onRequestClose={this.handleCloseModal}
                                 >
                                 <TextField
+                                    id="tmpChoiceName"
                                     hintText="Insert Choice Name"
                                     floatingLabelText="Choice Name"
-                                    //value={this.state.decision.name}
-                                    //onChange={this.handleChange.bind(this, 'name')}
+                                    value={this.state.decision.tmpChoiceName}
+                                    onChange={this.handleInputChange.bind(this)}
                                     />
                                 <br />
                                 <TextField
+                                    id="tmpChoiceDesc"
                                     hintText="Insert Choice Description"
                                     floatingLabelText="Choice Description"
-                                    //value={this.state.decision.description}
-                                    //onChange={this.handleChange.bind(this, 'description')}
+                                    value={this.state.decision.tmpChoiceDesc}
+                                    onChange={this.handleInputChange.bind(this)}
                                     />
                             </Dialog>
                         </Paper>
@@ -373,7 +374,7 @@ class AddDecision extends Component {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody displayRowCheckbox={false} >
-                                    {tableDataParticipants.map((row, index) => (
+                                    {this.state.decision.participant.map((row, index) => (
                                         <TableRow key={index} selected={row.selected}>
                                             <TableRowColumn>{row.name}</TableRowColumn>
                                             <TableRowColumn>{row.description}</TableRowColumn>
@@ -382,7 +383,30 @@ class AddDecision extends Component {
                                     ))}
                                 </TableBody>
                             </Table>
-                            <FlatButton label="Add Participants" href="/" />
+                            <RaisedButton label="Add Participants" onTouchTap={this.handleOpenModal} fullWidth={true} />
+                            <Dialog
+                                title="Add Participants"
+                                actions={actionsParticipantModal}
+                                modal={false}
+                                open={this.state.open}
+                                onRequestClose={this.handleCloseModal}
+                                >
+                                <TextField
+                                    id="tmpParticipantName"
+                                    hintText="Insert Participant Name"
+                                    floatingLabelText="Participant Name"
+                                    value={this.state.decision.tmpParticipantName}
+                                    onChange={this.handleInputChange.bind(this)}
+                                    />
+                                <br />
+                                <TextField
+                                    id="tmpParticipantDesc"
+                                    hintText="Insert Participant Description"
+                                    floatingLabelText="Participant Description"
+                                    value={this.state.decision.tmpParticipantDesc}
+                                    onChange={this.handleInputChange.bind(this)}
+                                    />
+                            </Dialog>
                         </Paper>
                     </div>
                 )
@@ -398,26 +422,17 @@ class AddDecision extends Component {
                                         <TableHeaderColumn>Action</TableHeaderColumn>
                                     </TableRow>
                                 </TableHeader>
-                                <TableBody displayRowCheckbox={false} >
-                                    {tableDataCriteria.map((row, index) => (
-                                        <TableRow key={index} selected={row.selected}>
-                                            <TableRowColumn>{row.type}</TableRowColumn>
-                                            <TableRowColumn>{row.name}</TableRowColumn>
-                                            <TableRowColumn><FlatButton icon={iconDelete} href="/" /></TableRowColumn>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
                             </Table>
                             <FlatButton label="Add Information" href="/" />
                         </Paper>
                     </div>
                 )
             default:
-                return 'Houston?'
+                return 'Houston? Wizard has gone to default case.'
         }
     }
     render() {
-        const {finished, stepIndex} = this.state
+        const {stepIndex} = this.state
         const contentStyle = { margin: '0 16px' }
         return (
             <MuiThemeProvider>
@@ -425,53 +440,40 @@ class AddDecision extends Component {
                     <br /><br /><br />
                     <Stepper activeStep={stepIndex}>
                         <Step>
-                            <StepLabel>Insert decision context</StepLabel>
+                            <StepLabel>Decision</StepLabel>
                         </Step>
                         <Step>
-                            <StepLabel>Insert decision criteria</StepLabel>
+                            <StepLabel>Criteria</StepLabel>
                         </Step>
                         <Step>
-                            <StepLabel>Insert decision choices</StepLabel>
+                            <StepLabel>Choices</StepLabel>
                         </Step>
                         <Step>
-                            <StepLabel>Insert decision partipants</StepLabel>
+                            <StepLabel>Participation</StepLabel>
                         </Step>
                         <Step>
-                            <StepLabel>Insert information</StepLabel>
+                            <StepLabel>Information Matrix</StepLabel>
                         </Step>
                     </Stepper>
                     <div style={contentStyle}>
-                        {finished ? (
-                            <p>
-                                <a href="#"
-                                    onClick={(event) => {
-                                        //event.preventDefault();
-                                        //this.setState({stepIndex: 0, finished: false});
-                                        this.postDecision()
-                                    } }
-                                    >
-                                    Save
-                                </a> the Decision?
-                             </p>
 
-                         ) : (
-                                <div>
-                                    {this.getStepContent(stepIndex)}
-                                    <div style={{ marginTop: 12 }}>
-                                        <FlatButton
-                                            label="Back"
-                                            disabled={stepIndex === 0}
-                                            onTouchTap={this.handlePrev}
-                                            style={{ marginRight: 12 }}
-                                            />
-                                        <RaisedButton
-                                            label={stepIndex === 4 ? 'Finish' : 'Next'}
-                                            primary={true}
-                                            onTouchTap={this.handleNext}
-                                            />
-                                    </div>
-                                </div>
-                            )}
+                        <div>
+                            {this.getStepContent(stepIndex)}
+                            <div style={{ marginTop: 12 }}>
+                                <FlatButton
+                                    label="Back"
+                                    disabled={stepIndex === 0}
+                                    onTouchTap={this.handlePrevWizard}
+                                    style={{ marginRight: 12 }}
+                                    />
+                                <RaisedButton
+                                    label={stepIndex === 4 ? 'Finish' : 'Next'}
+                                    primary={true}
+                                    onTouchTap={stepIndex === 4 ? this.handleFinishWizard : this.handleNextWizard}
+                                    />
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </MuiThemeProvider>
@@ -480,4 +482,4 @@ class AddDecision extends Component {
 
 }
 
-export default AddDecision;
+export default AddDecisionWizard

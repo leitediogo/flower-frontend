@@ -1,17 +1,16 @@
 import React, { Component } from 'react'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import MenuItem from 'material-ui/MenuItem';
-import MenuIcon from 'material-ui/svg-icons/navigation/menu';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import MenuItem from 'material-ui/MenuItem'
+import MenuIcon from 'material-ui/svg-icons/navigation/menu'
 import IconButton from 'material-ui/IconButton'
-import Drawer from 'material-ui/Drawer';
-import RemoveRedEye from 'material-ui/svg-icons/image/remove-red-eye';
-import PersonAdd from 'material-ui/svg-icons/social/person-add';
-import ContentLink from 'material-ui/svg-icons/content/link';
-import Divider from 'material-ui/Divider';
-import ContentCopy from 'material-ui/svg-icons/content/content-copy';
-import Download from 'material-ui/svg-icons/file/file-download';
-import Delete from 'material-ui/svg-icons/action/delete';
-
+import Drawer from 'material-ui/Drawer'
+import Accountbalance from 'material-ui/svg-icons/action/account-balance'
+import AttachMoney from 'material-ui/svg-icons/editor/attach-money'
+import Gavel from 'material-ui/svg-icons/action/gavel'
+import BusinessCenter from 'material-ui/svg-icons/places/business-center'
+import School from 'material-ui/svg-icons/social/school'
+import Share from 'material-ui/svg-icons/social/share'
+import Kitchen from 'material-ui/svg-icons/places/kitchen'
 
 class DecisionAppBarLeftIconMenu extends Component {
 
@@ -35,15 +34,13 @@ class DecisionAppBarLeftIconMenu extends Component {
                         >
                         <br />
                         <br />
-                        <MenuItem primaryText="Government" leftIcon={<RemoveRedEye />} />
-                        <MenuItem primaryText="Consumer" leftIcon={<PersonAdd />} />
-                        <MenuItem primaryText="Corporate" leftIcon={<ContentLink />} />
-                        <Divider />
-                        <MenuItem primaryText="Finance" leftIcon={<ContentCopy />} />
-                        <MenuItem primaryText="Social" leftIcon={<Download />} />
-                        <Divider />
-                        <MenuItem primaryText="My Decisions" leftIcon={<Delete />} />
-
+                        <MenuItem primaryText="Government" leftIcon={<Accountbalance />} />
+                        <MenuItem primaryText="Consumer" leftIcon={<Kitchen />} />
+                        <MenuItem primaryText="Corporate" leftIcon={<BusinessCenter />} />
+                        <MenuItem primaryText="Finance" leftIcon={<AttachMoney />} />
+                        <MenuItem primaryText="Legal" leftIcon={<Gavel />} />
+                        <MenuItem primaryText="Social" leftIcon={<Share />} />
+                        <MenuItem primaryText="Educational" leftIcon={<School />} />
                     </Drawer>
                 </div>
             </MuiThemeProvider>

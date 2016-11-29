@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import Paper from 'material-ui/Paper';
-import { BottomNavigation, BottomNavigationItem } from 'material-ui/BottomNavigation';
-import IconLocationOn from 'material-ui/svg-icons/communication/location-on';
-import IconFavorites from 'material-ui/svg-icons/action/favorite';
-import IconRecents from 'material-ui/svg-icons/navigation/refresh';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import Paper from 'material-ui/Paper'
+import { BottomNavigation, BottomNavigationItem } from 'material-ui/BottomNavigation'
+import IconFavorites from 'material-ui/svg-icons/action/favorite'
+import IconRecents from 'material-ui/svg-icons/navigation/refresh'
+import AccountCircle from 'material-ui/svg-icons/action/account-circle'
 
 const recentsIcon = <IconRecents />
-const favoritesIcon = <IconFavorites />;
-const nearbyIcon = <IconLocationOn />;
+const favoritesIcon = <IconFavorites />
+const myDecisionsIcon = <AccountCircle />
 
 let style ={
     position: "fixed",
@@ -16,7 +16,7 @@ let style ={
     width: "100%"
 }
 
-class DecisionBottomNavigation extends Component {
+class DecisionCatalogBottomNavigation extends Component {
     state = {
         selectedIndex: 0,
     }
@@ -40,8 +40,8 @@ class DecisionBottomNavigation extends Component {
                                 onTouchTap={() => this.select(1)}
                                 />
                             <BottomNavigationItem
-                                label="Nearby"
-                                icon={nearbyIcon}
+                                label="My Decisions"
+                                icon={myDecisionsIcon}
                                 onTouchTap={() => this.select(2)}
                                 />
                         </BottomNavigation>
@@ -53,4 +53,4 @@ class DecisionBottomNavigation extends Component {
 }
 
 
-export default DecisionBottomNavigation
+export default DecisionCatalogBottomNavigation

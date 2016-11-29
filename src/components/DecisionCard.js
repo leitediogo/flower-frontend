@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import { Card, CardActions, CardHeader, CardTitle, CardText } from 'material-ui/Card';
+import { Card, CardActions, CardHeader, CardTitle, CardText, CardMedia } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 
 let style = {
@@ -14,10 +14,22 @@ class DecisionCard extends Component {
             <MuiThemeProvider>
                 <div>
                     <Card zDepth={1} style={style}>
-                        <CardHeader title="Created By" subtitle={this.props.createdBy} avatar={this.props.avatar} />
-                        <CardTitle title={this.props.title} subtitle={this.props.subtTitle} />
+                        <CardHeader 
+                            title="Created By" 
+                            subtitle={this.props.createdBy} 
+                            avatar={this.props.avatar} 
+                            actAsExpander={true}
+                            showExpandableButton={true}
+                        />
+                        <CardTitle 
+                            title={this.props.title} 
+                            subtitle={this.props.subtTitle} 
+                        />
                         <CardText>{this.props.cardText}</CardText>
-                        <CardActions>
+                        <CardMedia expandable={true}>
+                            <p>decision detail</p>
+                        </CardMedia>
+                        <CardActions expandable={true}>
                             <FlatButton label="Edit" />
                             <FlatButton label="Open" />
                         </CardActions>
