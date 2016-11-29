@@ -13,26 +13,20 @@ let style = {
 class DecisionCardList extends Component {
     constructor() {
         super()
-        this.state = { decisionsBody: [] }
+        this.state = { decisions: [] }
     }
 
     componentDidMount() {
         agent.get('http://localhost:3000/api/Decisions')
             .then(function(res) {
-                this.setState({ decisionsBody: res.body });
+                this.setState({ decisions: res.body });
             }.bind(this));
     }
 
     render() {
         let cards = [];
-        for (var i = 0; i < this.state.decisionsBody.length; i++) {
-            cards.push(<DecisionCard
-                title={this.state.decisionsBody[i].name}
-                subTitle={this.state.decisionsBody[i].description}
-                createdBy={this.state.decisionsBody[i].createdById}
-                avatar={avatar}
-                cardText={this.state.decisionsBody[i].description}
-                key={i} />);
+        for (var i = 0; i < this.state.decisions.length; i++) {
+            cards.push(<DecisionCard decision={this.state.decisions[i]} avatar={avatar} key={i} />)
         }
         return (
             <div>

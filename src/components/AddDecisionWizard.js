@@ -65,25 +65,16 @@ class AddDecisionWizard extends Component {
     }
 
     postDecision() {
+        console.log('posting process!')
         agent.post('http://localhost:3000/api/Decisions')
             .send({
                 name: this.state.decision.name,
-                description: this.state.decision.description,
-                status: "created",
-                category: this.state.decision.category,
-                createdBy: this.state.decision.createdBy,
-                createdById: 0,
-                ownerId: 0,
-                categoryId: 1,
-                dueDt: "2016-10-28",
-                creationDt: "2016-10-28",
-                lastUpdateDt: "2016-10-28"
+                definition: this.state.decision
             })
             .set('Accept', 'application/json')
-            .end(function (err, res) {
+            .end(function(err, res) {
                 if (err || !res.ok) {
-                    console.log(err)
-                    console.log(res.body)
+                    console.error(err);
                 } else {
                     console.log('yay! decision posted ' + JSON.stringify(res.body));
                 }

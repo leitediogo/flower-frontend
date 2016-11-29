@@ -16,16 +16,16 @@ class DecisionCard extends Component {
                     <Card zDepth={1} style={style}>
                         <CardHeader 
                             title="Created By" 
-                            subtitle={this.props.createdBy} 
+                            subtitle={this.props.decision.definition.createdBy} 
                             avatar={this.props.avatar} 
                             actAsExpander={true}
                             showExpandableButton={true}
                         />
                         <CardTitle 
-                            title={this.props.title} 
-                            subtitle={this.props.subtTitle} 
+                            title={this.props.decision.definition.name} 
+                            subtitle={this.props.decision.definition.category} 
                         />
-                        <CardText>{this.props.cardText}</CardText>
+                        <CardText>{this.props.decision.definition.description}</CardText>
                         <CardMedia expandable={true}>
                             <p>decision detail</p>
                         </CardMedia>
