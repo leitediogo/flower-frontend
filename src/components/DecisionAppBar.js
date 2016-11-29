@@ -4,10 +4,11 @@ import AppBar from 'material-ui/AppBar'
 import DecisionAppBarRightIconMenu from './DecisionAppBarRightIconMenu'
 import DecisionAppBarLeftIconMenu from './DecisionAppBarLeftIconMenu'
 
-let style ={
+let style = {
     position: "fixed",
     top: "0px",
-    width: "100%"
+    width: "100%",
+    backgroundColor: 'lightGrey'
 }
 
 class DecisionAppBar extends Component {

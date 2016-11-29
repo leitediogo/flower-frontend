@@ -13,7 +13,7 @@ const myDecisionsIcon = <AccountCircle />
 let style ={
     position: "fixed",
     bottom: "0px",
-    width: "100%"
+    width: "100%",
 }
 
 class DecisionCatalogBottomNavigation extends Component {
