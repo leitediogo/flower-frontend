@@ -408,13 +408,19 @@ class AddDecisionWizard extends Component {
                             <Table>
                                 <TableHeader displaySelectAll={false}>
                                     <TableRow>
-                                        <TableHeaderColumn>Name</TableHeaderColumn>
-                                        <TableHeaderColumn>Description</TableHeaderColumn>
-                                        <TableHeaderColumn>Action</TableHeaderColumn>
+                                    {this.state.decision.criteria.map((row, index) => (
+                                        <TableHeaderColumn key={index}>{row.name}</TableHeaderColumn>
+                                    ))}
                                     </TableRow>
                                 </TableHeader>
+                                <TableBody displayRowCheckbox={false} >
+                                    {this.state.decision.choice.map((row, index) => (
+                                        <TableRow key={index} selected={row.selected}>
+                                            <TableRowColumn>{row.name}</TableRowColumn>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
                             </Table>
-                            <FlatButton label="Add Information" href="/" />
                         </Paper>
                     </div>
                 )
