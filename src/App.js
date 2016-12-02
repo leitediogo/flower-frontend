@@ -7,7 +7,7 @@ import DecisionCardList from './components/DecisionCardList'
 import DecisionBottomNavigation from './components/DecisionBottomNavigation'
 import AddDecisionWizard from './components/AddDecisionWizard'
 import IconTesting from './components/IconTesting'
-import Main from './components/Main'
+import MatrixTryOut from './components/MatrixTryOut'
 
 // Needed for onTouchTap
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -24,7 +24,7 @@ class App extends Component {
           <Route path="/" component={DecisionCardList} />
           <Route path="/AddDecisionWizard" component={AddDecisionWizard} />
           <Route path="/icons" component={IconTesting} />
-          <Route path="/main" component={Main} />
+          <Route path="/matrix" component={MatrixTryOut} />
         </Router>
         <div>
           <DecisionBottomNavigation />

@@ -72,7 +72,7 @@ class AddDecisionWizard extends Component {
                 definition: this.state.decision
             })
             .set('Accept', 'application/json')
-            .end(function(err, res) {
+            .end(function (err, res) {
                 if (err || !res.ok) {
                     console.error(err);
                 } else {
@@ -168,6 +168,15 @@ class AddDecisionWizard extends Component {
         //reset tmps 
         change.decision.tmpParticipantName = ''
         change.decision.tmpParticipantDesc = ''
+    }
+
+    handleInformationRow = (event,index,value, rowNumber, columnId ) => {
+        console.log('row clicked')
+        console.log (event)
+        console.log(index)
+        console.log(value)
+        console.log(rowNumber)
+        console.log(columnId)
     }
 
     getStepContent(stepIndex) {
@@ -404,13 +413,13 @@ class AddDecisionWizard extends Component {
             case 4:
                 return (
                     <div>
-                        <Paper zDepth={0} style={styles.paper}>
-                            <Table>
+                        <Paper zDepth={1} style={styles.paper}>
+                            <Table onCellClick={this.handleInformationRow}>
                                 <TableHeader displaySelectAll={false}>
                                     <TableRow>
-                                    {this.state.decision.criteria.map((row, index) => (
-                                        <TableHeaderColumn key={index}>{row.name}</TableHeaderColumn>
-                                    ))}
+                                        {this.state.decision.criteria.map((row, index) => (
+                                            <TableHeaderColumn key={index}>{row.name}</TableHeaderColumn>
+                                        ))}
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody displayRowCheckbox={false} >
