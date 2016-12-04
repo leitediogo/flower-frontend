@@ -6,9 +6,6 @@ import FlatButton from 'material-ui/FlatButton'
 import Dialog from 'material-ui/Dialog'
 import TextField from 'material-ui/TextField'
 
-const criteria = [{ id: 0, name: '-' }, { id: 1, name: 'criteria1' }, { id: 2, name: 'criteria2' }, { id: 3, name: 'criteria3' }]
-const choices = [{ id: 1, name: 'choice1' }, { id: 2, name: 'choice2' }, { id: 3, name: 'choice3' }]
-
 const styles = {
     block: {
         maxWidth: 250,
@@ -24,8 +21,6 @@ const styles = {
     }
 }
 
-
-
 class MatrixTryOut extends Component {
 
     constructor(props, context) {
@@ -34,7 +29,20 @@ class MatrixTryOut extends Component {
             open: false,
             row: 0,
             col: 0,
-            tmpCell: ''
+            tmpCell: '',
+            decision: {
+                criteria: [
+                    { id: 0, name: '-' },
+                    { id: 1, name: 'criteria1' },
+                    { id: 2, name: 'criteria2' },
+                    { id: 3, name: 'criteria3' }
+                ],
+                choices: [
+                    { id: 1, name: 'choice1' },
+                    { id: 2, name: 'choice2' },
+                    { id: 3, name: 'choice3' }
+                ]
+            }
         }
     }
 
@@ -95,14 +103,14 @@ class MatrixTryOut extends Component {
                                 adjustForCheckbox={false}
                                 enableSelectAll={false}>
                                 <TableRow>
-                                    {criteria.map((row, index) => (
+                                    {this.state.decision.criteria.map((row, index) => (
                                         <TableHeaderColumn key={index}>{row.name}</TableHeaderColumn>
                                     ))}
                                 </TableRow>
                             </TableHeader>
                             <TableBody displayRowCheckbox={false} >
-                                {choices.map((row, index) => (
-                                    <TableRow key={index} selected={row.selected}>
+                                {this.state.decision.choices.map((row, index) => (
+                                    <TableRow key={index}>
                                         <TableRowColumn>{row.name}</TableRowColumn>
                                         <TableRowColumn></TableRowColumn>
                                         <TableRowColumn></TableRowColumn>

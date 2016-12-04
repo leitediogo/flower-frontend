@@ -8,6 +8,7 @@ import DecisionBottomNavigation from './components/DecisionBottomNavigation'
 import AddDecisionWizard from './components/AddDecisionWizard'
 import IconTesting from './components/IconTesting'
 import MatrixTryOut from './components/MatrixTryOut'
+import Wizard from './components/Wizard'
 
 // Needed for onTouchTap
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -25,6 +26,7 @@ class App extends Component {
           <Route path="/AddDecisionWizard" component={AddDecisionWizard} />
           <Route path="/icons" component={IconTesting} />
           <Route path="/matrix" component={MatrixTryOut} />
+          <Route path="/wizard" component={Wizard} />
         </Router>
         <div>
           <DecisionBottomNavigation />

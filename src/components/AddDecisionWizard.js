@@ -32,7 +32,7 @@ const styles = {
         width: 500,
         height: 300
     }
-};
+}
 
 class AddDecisionWizard extends Component {
 
