@@ -11,6 +11,7 @@ import {
 
 import { browserHistory } from 'react-router'
 import WizardContext from './WizardContext'
+import WizardCriteria from './WizardCriteria'
 
 class Wizard extends Component {
 
@@ -68,20 +69,72 @@ class Wizard extends Component {
         }
     }
 
+    handleSaveCriteria(name, desc) {
+        //set state
+        let change = this.state
+        let criterionToPush = {
+            description: desc,
+            name: name
+        }
+        change.decision.criteria.push(criterionToPush)
+        this.setState(change)
+    }
+
+    handleSaveChoice(name, desc) {
+        //set state
+        let change = this.state
+        let choiceToPush = {
+            description: desc,
+            name: name
+        }
+        change.decision.choice.push(choiceToPush)
+        this.setState(change)
+    }
+
+    handleSaveParticipant(name, desc) {
+        //set state
+        let change = this.state
+        let participantToPush = {
+            description: desc,
+            name: name
+        }
+        change.decision.participant.push(participantToPush)
+        this.setState(change)
+    }
+
+    postDecision() {
+        console.log('posting process!')
+        agent.post('http://localhost:3000/api/Decisions')
+            .send({
+                name: this.state.decision.name,
+                definition: this.state.decision
+            })
+            .set('Accept', 'application/json')
+            .end(function (err, res) {
+                if (err || !res.ok) {
+                    console.error(err);
+                } else {
+                    console.log('yay! decision posted ' + JSON.stringify(res.body));
+                }
+            })
+    }
+
     getStepContent(stepIndex) {
         switch (stepIndex) {
             case 0:
                 return (
-                    <WizardContext 
-                        decision={this.state.decision} 
-                        handleInputChange={this.handleInputChange.bind(this)} 
-                        handleSelectCategoryChange={this.handleSelectCategoryChange.bind(this)}/>
+                    <WizardContext
+                        decision={this.state.decision}
+                        handleInputChange={this.handleInputChange.bind(this)}
+                        handleSelectCategoryChange={this.handleSelectCategoryChange.bind(this)} 
+                        />
                 )
             case 1:
                 return (
-                    <div>
-                        step1
-                    </div>
+                    <WizardCriteria
+                            decision={this.state.decision}
+                            handleSaveCriteria={this.handleSaveCriteria.bind(this)}
+                        />
                 )
             case 2:
                 return (
@@ -106,22 +159,7 @@ class Wizard extends Component {
         }
     }
 
-    postDecision() {
-        console.log('posting process!')
-        agent.post('http://localhost:3000/api/Decisions')
-            .send({
-                name: this.state.decision.name,
-                definition: this.state.decision
-            })
-            .set('Accept', 'application/json')
-            .end(function (err, res) {
-                if (err || !res.ok) {
-                    console.error(err);
-                } else {
-                    console.log('yay! decision posted ' + JSON.stringify(res.body));
-                }
-            })
-    }
+
 
     render() {
         const {stepIndex} = this.state
