@@ -6,14 +6,12 @@
     "react-scripts": "0.7.0"
   },
   "dependencies": {
-    "material-ui": "^0.16.1",
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2",
-    "react-flip-move": "^2.7.1",
+    "material-ui": "^0.16.2",
+    "react": "^15.4.0",
+    "react-dom": "^15.4.0",
     "react-router": "^3.0.0",
-    "react-tap-event-plugin": "^1.0.0",
-    "superagent": "^2.3.0",
-    "winston": "^2.3.0"
+    "react-tap-event-plugin": "^2.0.1",
+    "superagent": "^3.1.0"
   },
   "scripts": {
     "start": "react-scripts start",

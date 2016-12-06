@@ -9,7 +9,6 @@ import AddDecisionWizard from './components/AddDecisionWizard'
 import IconTesting from './components/IconTesting'
 import MatrixTryOut from './components/MatrixTryOut'
 import Wizard from './components/Wizard'
-
 // Needed for onTouchTap
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
