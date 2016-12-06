@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import agent from 'superagent'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import TextField from 'material-ui/TextField'
 import SelectField from 'material-ui/SelectField'

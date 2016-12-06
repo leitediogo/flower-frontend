@@ -19,14 +19,14 @@ const styles = {
     }
 }
 
-class WizardCriteria extends Component {
+class WizardChoices extends Component {
 
-    constructor(props, context) {
+       constructor(props, context) {
         super(props, context)
         this.state = {
             open: false,
-            tmpCritName: '',
-            tmpCritDesc: ''
+            tmpChoiceName: '',
+            tmpChoiceDesc: ''
         }
     }
 
@@ -45,29 +45,29 @@ class WizardCriteria extends Component {
         this.setState({ open: false })
     }
 
-    handleSendSaveCriteria = () => {
-        console.log('handleSendSaveCriteria')
+    handleSendSaveChoice = () => {
+        console.log('handleSendSaveChoice')
         //update global state
-        this.props.handleSaveCriteria(this.state.tmpCritName, this.state.tmpCritDesc)
+        this.props.handleSaveChoice(this.state.tmpChoiceName, this.state.tmpChoiceDesc)
         //close modal
         this.setState({ open: false })
         //reset tmps 
-        this.setState({ tmpCritName: '', tmpCritDesc: '' })
+        this.setState({ tmpChoiceName: '', tmpChoiceDesc: '' })
     }
 
-    actions = [
-        <FlatButton
-            label="Cancel"
-            primary={true}
-            onTouchTap={this.handleCloseModal}
-            />,
-        <FlatButton
-            label="Save"
-            primary={true}
-            keyboardFocused={true}
-            onTouchTap={this.handleSendSaveCriteria}
-            />,
-    ]
+       actions = [
+            <FlatButton
+                label="Cancel"
+                primary={true}
+                onTouchTap={this.handleCloseModal}
+                />,
+            <FlatButton
+                label="Save"
+                primary={true}
+                keyboardFocused={true}
+                onTouchTap={this.handleSendSaveChoice}
+                />,
+        ]
 
     render() {
         return (
@@ -87,7 +87,7 @@ class WizardCriteria extends Component {
                                 </TableRow>
                             </TableHeader>
                             <TableBody displayRowCheckbox={false} >
-                                {this.props.decision.criteria.map((row, index) => (
+                                {this.props.decision.choices.map((row, index) => (
                                     <TableRow key={index} selected={row.selected}>
                                         <TableRowColumn>{row.name}</TableRowColumn>
                                         <TableRowColumn>{row.description}</TableRowColumn>
@@ -96,27 +96,27 @@ class WizardCriteria extends Component {
                                 ))}
                             </TableBody>
                         </Table>
-                        <RaisedButton label="Add Criteria" onTouchTap={this.handleOpenModal} fullWidth={true} />
+                        <RaisedButton label="Add Choice" onTouchTap={this.handleOpenModal} fullWidth={true} />
                         <Dialog
-                            title="Add Criteria"
+                            title="Add Choice"
                             actions={this.actions}
                             modal={false}
                             open={this.state.open}
                             onRequestClose={this.handleCloseModal}
                             >
                             <TextField
-                                id="tmpCritName"
-                                hintText="Insert Criterion Name"
-                                floatingLabelText="Criterion Name"
-                                value={this.state.tmpCritName}
+                                id="tmpChoiceName"
+                                hintText="Insert Choice Name"
+                                floatingLabelText="Choice Name"
+                                value={this.state.tmpChoiceName}
                                 onChange={this.handleInputChange.bind(this)}
                                 />
                             <br />
                             <TextField
-                                id="tmpCritDesc"
-                                hintText="Insert Criterion Description"
-                                floatingLabelText="Criterion Description"
-                                value={this.state.tmpCritDesc}
+                                id="tmpChoiceDesc"
+                                hintText="Insert Choice Description"
+                                floatingLabelText="Choice Description"
+                                value={this.state.tmpChoiceDesc}
                                 onChange={this.handleInputChange.bind(this)}
                                 />
                         </Dialog>
@@ -127,4 +127,4 @@ class WizardCriteria extends Component {
     }
 }
 
-export default WizardCriteria
+export default WizardChoices

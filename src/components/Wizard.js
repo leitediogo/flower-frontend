@@ -12,6 +12,9 @@ import {
 import { browserHistory } from 'react-router'
 import WizardContext from './WizardContext'
 import WizardCriteria from './WizardCriteria'
+import WizardChoices from './WizardChoices'
+import WizardParticipants from './WizardParticipants'
+import WizardMatrix from './WizardMatrix'
 
 class Wizard extends Component {
 
@@ -27,9 +30,9 @@ class Wizard extends Component {
                 category: '',
                 createdBy: 'Diogo Leite',
                 owner: 'Diogo Leite',
-                participant: [],
+                participants: [],
                 criteria: [],
-                choice: []
+                choices: []
             }
         }
     }
@@ -87,18 +90,18 @@ class Wizard extends Component {
             description: desc,
             name: name
         }
-        change.decision.choice.push(choiceToPush)
+        change.decision.choices.push(choiceToPush)
         this.setState(change)
     }
 
-    handleSaveParticipant(name, desc) {
+    handleSaveParticipant(name, role) {
         //set state
         let change = this.state
         let participantToPush = {
-            description: desc,
+            role: role,
             name: name
         }
-        change.decision.participant.push(participantToPush)
+        change.decision.participants.push(participantToPush)
         this.setState(change)
     }
 
@@ -123,44 +126,23 @@ class Wizard extends Component {
         switch (stepIndex) {
             case 0:
                 return (
-                    <WizardContext
-                        decision={this.state.decision}
-                        handleInputChange={this.handleInputChange.bind(this)}
-                        handleSelectCategoryChange={this.handleSelectCategoryChange.bind(this)} 
-                        />
-                )
+                    <WizardContext decision={this.state.decision} handleInputChange={this.handleInputChange.bind(this)} handleSelectCategoryChange={this.handleSelectCategoryChange.bind(this)}/>)
             case 1:
                 return (
-                    <WizardCriteria
-                            decision={this.state.decision}
-                            handleSaveCriteria={this.handleSaveCriteria.bind(this)}
-                        />
-                )
+                    <WizardCriteria decision={this.state.decision} handleSaveCriteria={this.handleSaveCriteria.bind(this)}/>)
             case 2:
                 return (
-                    <div>
-                        step2
-                    </div>
-                )
+                    <WizardChoices decision={this.state.decision} handleSaveChoice={this.handleSaveChoice.bind(this)} />)
             case 3:
                 return (
-                    <div>
-                        step3
-                    </div>
-                )
+                    <WizardParticipants decision={this.state.decision} handleSaveParticipant={this.handleSaveParticipant.bind(this)}/>)
             case 4:
-                return (
-                    <div>
-                        step4
-                    </div>
-                )
+                return (<WizardMatrix decision={this.state.decision} />)
             default:
                 return 'Houston? Wizard has gone to default case.'
         }
     }
-
-
-
+    
     render() {
         const {stepIndex} = this.state
         return (

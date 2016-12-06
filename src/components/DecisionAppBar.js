@@ -20,7 +20,7 @@ class DecisionAppBar extends Component {
                         style={style}
                         title="Flower"
                         iconElementRight={<DecisionAppBarRightIconMenu />}
-                        iconElementLeft={<DecisionAppBarLeftIconMenu />}
+                        iconElementLeft={<DecisionAppBarLeftIconMenu filterDecisions={this.props.filterDecisions}/>}
                         />
                 </div>
             </MuiThemeProvider>

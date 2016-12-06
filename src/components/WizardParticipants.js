@@ -4,6 +4,7 @@ import TextField from 'material-ui/TextField'
 import Paper from 'material-ui/Paper'
 import IconDelete from 'material-ui/svg-icons/action/delete'
 import FlatButton from 'material-ui/FlatButton'
+import RaisedButton from 'material-ui/RaisedButton'
 import { Table, TableRow, TableBody, TableRowColumn, TableHeader, TableHeaderColumn } from 'material-ui/Table'
 import Dialog from 'material-ui/Dialog'
 
@@ -18,14 +19,14 @@ const styles = {
     }
 }
 
-class WizardChoice extends Component {
+class WizardParticipants extends Component {
 
-       constructor(props, context) {
+    constructor(props, context) {
         super(props, context)
         this.state = {
             open: false,
-            tmpChoiceName: '',
-            tmpChoiceDesc: ''
+            tmpPartName: '',
+            tmpPartRole: ''
         }
     }
 
@@ -44,29 +45,29 @@ class WizardChoice extends Component {
         this.setState({ open: false })
     }
 
-    handleSendSaveChoice = () => {
-        console.log('handleSendSaveChoice')
+    handleSendSaveParticipant = () => {
+        console.log('handleSendSaveParticipant')
         //update global state
-        this.props.handleSaveChoice(this.state.tmpChoiceName, this.state.tmpChoiceDesc)
+        this.props.handleSaveParticipant(this.state.tmpPartName, this.state.tmpPartRole)
         //close modal
         this.setState({ open: false })
         //reset tmps 
-        this.setState({ tmpChoiceName: '', tmpChoiceDesc: '' })
+        this.setState({ tmpPartName: '', tmpPartRole: '' })
     }
 
-       actions = [
-            <FlatButton
-                label="Cancel"
-                primary={true}
-                onTouchTap={this.handleCloseModal}
-                />,
-            <FlatButton
-                label="Save"
-                primary={true}
-                keyboardFocused={true}
-                onTouchTap={this.handleSendSaveChoice}
-                />,
-        ]
+    actions = [
+        <FlatButton
+            label="Cancel"
+            primary={true}
+            onTouchTap={this.handleCloseModal}
+            />,
+        <FlatButton
+            label="Save"
+            primary={true}
+            keyboardFocused={true}
+            onTouchTap={this.handleSendSaveParticipant}
+            />,
+    ]
 
     render() {
         return (
@@ -81,41 +82,41 @@ class WizardChoice extends Component {
                                 >
                                 <TableRow>
                                     <TableHeaderColumn>Name</TableHeaderColumn>
-                                    <TableHeaderColumn>Description</TableHeaderColumn>
+                                    <TableHeaderColumn>Role</TableHeaderColumn>
                                     <TableHeaderColumn>Action</TableHeaderColumn>
                                 </TableRow>
                             </TableHeader>
                             <TableBody displayRowCheckbox={false} >
-                                {this.props.decision.choice.map((row, index) => (
+                                {this.props.decision.participants.map((row, index) => (
                                     <TableRow key={index} selected={row.selected}>
                                         <TableRowColumn>{row.name}</TableRowColumn>
-                                        <TableRowColumn>{row.description}</TableRowColumn>
+                                        <TableRowColumn>{row.role}</TableRowColumn>
                                         <TableRowColumn><FlatButton icon={iconDelete} href="/" /></TableRowColumn>
                                     </TableRow>
                                 ))}
                             </TableBody>
                         </Table>
-                        <RaisedButton label="Add Criteria" onTouchTap={this.handleOpenModal} fullWidth={true} />
+                        <RaisedButton label="Add Participant" onTouchTap={this.handleOpenModal} fullWidth={true} />
                         <Dialog
-                            title="Add Criteria"
+                            title="Add Participant"
                             actions={this.actions}
                             modal={false}
                             open={this.state.open}
                             onRequestClose={this.handleCloseModal}
                             >
                             <TextField
-                                id="tmpChoiceName"
-                                hintText="Insert Choice Name"
-                                floatingLabelText="Choice Name"
-                                value={this.state.decision.tmpChoiceName}
+                                id="tmpPartName"
+                                hintText="Insert Participant Name"
+                                floatingLabelText="Participant Name"
+                                value={this.state.tmpPartName}
                                 onChange={this.handleInputChange.bind(this)}
                                 />
                             <br />
                             <TextField
-                                id="tmpChoiceDesc"
-                                hintText="Insert Choice Description"
-                                floatingLabelText="Choice Description"
-                                value={this.state.decision.tmpChoiceDesc}
+                                id="tmpPartRole"
+                                hintText="Insert Participant Role"
+                                floatingLabelText="Participant Role"
+                                value={this.state.tmpPartRole}
                                 onChange={this.handleInputChange.bind(this)}
                                 />
                         </Dialog>
@@ -126,4 +127,4 @@ class WizardChoice extends Component {
     }
 }
 
-export default WizardChoice
+export default WizardParticipants

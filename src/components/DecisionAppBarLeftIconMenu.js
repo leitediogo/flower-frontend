@@ -11,6 +11,7 @@ import BusinessCenter from 'material-ui/svg-icons/places/business-center'
 import School from 'material-ui/svg-icons/social/school'
 import Share from 'material-ui/svg-icons/social/share'
 import Kitchen from 'material-ui/svg-icons/places/kitchen'
+import Accessibility from 'material-ui/svg-icons/action/accessibility'
 
 class DecisionAppBarLeftIconMenu extends Component {
 
@@ -18,7 +19,14 @@ class DecisionAppBarLeftIconMenu extends Component {
         super(props);
         this.state = { open: false };
     }
+
     handleToggle = () => this.setState({ open: !this.state.open });
+
+    handleClickCategory(category) {
+        this.props.filterDecisions(category)
+        this.setState({ open: false })
+    }
+
     render() {
         return (
             <MuiThemeProvider>
@@ -34,13 +42,14 @@ class DecisionAppBarLeftIconMenu extends Component {
                         >
                         <br />
                         <br />
-                        <MenuItem primaryText="Government" leftIcon={<Accountbalance />} />
-                        <MenuItem primaryText="Consumer" leftIcon={<Kitchen />} />
-                        <MenuItem primaryText="Corporate" leftIcon={<BusinessCenter />} />
-                        <MenuItem primaryText="Finance" leftIcon={<AttachMoney />} />
-                        <MenuItem primaryText="Legal" leftIcon={<Gavel />} />
-                        <MenuItem primaryText="Social" leftIcon={<Share />} />
-                        <MenuItem primaryText="Educational" leftIcon={<School />} />
+                        <MenuItem primaryText="Government" leftIcon={<Accountbalance />} onClick={() => this.handleClickCategory('Government')}/>
+                        <MenuItem primaryText="Consumer" leftIcon={<Kitchen />}  onClick={() => this.handleClickCategory('Consumer')}/>
+                        <MenuItem primaryText="Corporate" leftIcon={<BusinessCenter />}  onClick={() => this.handleClickCategory('Corporate')}/>
+                        <MenuItem primaryText="Finance" leftIcon={<AttachMoney />}  onClick={() => this.handleClickCategory('Finance')}/>
+                        <MenuItem primaryText="Legal" leftIcon={<Gavel />}  onClick={() => this.handleClickCategory('Legal')}/>
+                        <MenuItem primaryText="Social" leftIcon={<Share />}  onClick={() => this.handleClickCategory('Social')}/>
+                        <MenuItem primaryText="Educational" leftIcon={<School />}  onClick={() => this.handleClickCategory('Educational')}/>
+                        <MenuItem primaryText="All" leftIcon={<Accessibility />}  onClick={() => this.handleClickCategory('All')}/>
                     </Drawer>
                 </div>
             </MuiThemeProvider>
