@@ -31,8 +31,9 @@ class Wizard extends Component {
                 createdBy: 'Diogo Leite',
                 owner: 'Diogo Leite',
                 participants: [],
-                criteria: [],
-                choices: []
+                criteria: [{name: '-', description: ''}],
+                choices: [],
+                info: []
             }
         }
     }
@@ -107,7 +108,7 @@ class Wizard extends Component {
 
     postDecision() {
         console.log('posting process!')
-        agent.post('http://vega2.ddns.net:3000/api/Decisions')
+        agent.post('http://localhost:3000/api/Decisions')
             .send({
                 name: this.state.decision.name,
                 definition: this.state.decision

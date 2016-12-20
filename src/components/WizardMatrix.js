@@ -23,7 +23,13 @@ class WizardMatrix extends Component {
             open: false,
             row: 0,
             col: 0,
-            tmpCell: ''
+            tmpCell: '',
+            info: [{ row: '0', col: '3', description: 'desc1' },
+            { row: '0', col: '4', description: 'desc2' },
+            { row: '0', col: '5', description: 'desc3' },
+            { row: '1', col: '3', description: 'desc4' },
+            { row: '1', col: '4', description: 'desc5' },
+            { row: '1', col: '5', description: 'desc6' }]
         }
     }
 
@@ -40,7 +46,8 @@ class WizardMatrix extends Component {
     }
 
     handleSaveInformationModal = () => {
-        console.log('handleSaveInformation')
+        console.log('handleSaveInformationModal')
+        console.log(this.state.tmpCell)
         //set state to close modal
         this.setState({ open: false })
     }
@@ -68,28 +75,38 @@ class WizardMatrix extends Component {
                 onTouchTap={this.handleSaveInformationModal}
                 />,
         ]
-
         return (
             <MuiThemeProvider>
                 <div>
                     <Paper zDepth={1} style={styles.paper}>
-                        <Table onCellClick={this.handleInformationRow}>
+                        <Table onCellClick={this.handleInformationRow} fixedHeader={true}>
                             <TableHeader
                                 displaySelectAll={false}
                                 adjustForCheckbox={false}
                                 enableSelectAll={false}
                                 >
                                 <TableRow>
-                                    <TableHeaderColumn key='0'>-</TableHeaderColumn>
-                                    {this.props.decision.criteria.map((row, index) => (
-                                        <TableHeaderColumn key={index}>{row.name}</TableHeaderColumn>
+                                    {this.props.decision.criteria.map((criterion, index) => (
+                                        <TableHeaderColumn key={index}>{criterion.name}</TableHeaderColumn>
                                     ))}
                                 </TableRow>
                             </TableHeader>
                             <TableBody displayRowCheckbox={false} >
-                                {this.props.decision.choices.map((row, index) => (
-                                    <TableRow key={index} selected={row.selected}>
-                                        <TableRowColumn>{row.name}</TableRowColumn>
+                                {this.props.decision.choices.map((choice, index) => (
+                                    <TableRow key={index}>
+                                        <TableRowColumn key={index}>{choice.name}</TableRowColumn>
+
+                                        {this.props.decision.criteria.map((criterion, i) => (
+                                            criterion.name === '-' ? '' :
+                                                <TableRowColumn key={i}>{
+                                                    this.state.info.filter(function (info) {
+                                                        return info.row === criterion.name && info.col === choice.name
+                                                    })[0] ? this.state.info.filter(function (info) {
+                                                        return info.row === criterion.name && info.col === choice.name
+                                                    })[0].description : ''
+                                                }</TableRowColumn>
+                                        ))}
+
                                     </TableRow>
                                 ))}
                             </TableBody>
